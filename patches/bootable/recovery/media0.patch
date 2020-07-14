@@ -1,7 +1,7 @@
-From fed654dd1b61082b21f187bcc29398d02a508b8c Mon Sep 17 00:00:00 2001
+From 2b89c288722cb03687eed4afc299e935cd47cafc Mon Sep 17 00:00:00 2001
 From: Dinolek <18579460+Dinolek@users.noreply.github.com>
-Date: Sat, 17 Aug 2019 17:08:24 +0200
-Subject: [PATCH] Always use /data/media/0 instead of /data/media
+Date: Sun, 12 Jul 2020 12:29:25 +0200
+Subject: [PATCH 2/2] Always use /data/media/0 instead of /data/media
 
 Change-Id: I87d1b9fa51f22a4c2e6e7b258e89c0eedb0163da
 ---
@@ -9,10 +9,10 @@ Change-Id: I87d1b9fa51f22a4c2e6e7b258e89c0eedb0163da
  1 file changed, 4 insertions(+)
 
 diff --git a/partition.cpp b/partition.cpp
-index 5d4e61dc..8b32b008 100644
+index 6f61de3..e42cdd6 100755
 --- a/partition.cpp
 +++ b/partition.cpp
-@@ -1112,6 +1112,10 @@ void TWPartition::Setup_Data_Media() {
+@@ -1170,6 +1170,10 @@ void TWPartition::Setup_Data_Media() {
  			Make_Dir("/sdcard", false);
  			Symlink_Mount_Point = "/sdcard";
  		}
@@ -24,5 +24,5 @@ index 5d4e61dc..8b32b008 100644
  			Storage_Path = Mount_Point + "/media/0";
  			Symlink_Path = Storage_Path;
 -- 
-2.22.1
+2.27.0
 

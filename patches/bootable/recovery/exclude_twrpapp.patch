@@ -1,7 +1,7 @@
-From b6d5918732ed89d4e75c711bbeef01a50cb20113 Mon Sep 17 00:00:00 2001
+From 4ad4713ad7a8f6a01c9f401503760e6d56c06bb5 Mon Sep 17 00:00:00 2001
 From: nailyk-fr <nailyk_git@nailyk.fr>
 Date: Tue, 8 Aug 2017 21:23:35 +0200
-Subject: [PATCH] TWRP: add an option to exclude the TWRP app
+Subject: [PATCH 1/2] TWRP: add an option to exclude the TWRP app
 
 * Allow device maintainer to exclude the twrp app and disable
   the installation prompt. Mostly the app is useless for
@@ -20,24 +20,24 @@ Change-Id: Ic5c5db25e1781df8d072a2a6168f65f86e266ef6
  6 files changed, 12 insertions(+)
 
 diff --git a/Android.mk b/Android.mk
-index 7ffcd70..4f56ef4 100755
+index af49367..b7c32f5 100755
 --- a/Android.mk
 +++ b/Android.mk
-@@ -398,6 +398,9 @@ endif
- ifneq ($(TW_CLOCK_OFFSET),)
- 	LOCAL_CFLAGS += -DTW_CLOCK_OFFSET=$(TW_CLOCK_OFFSET)
+@@ -424,6 +424,9 @@ ifneq ($(TW_INCLUDE_LIBRESETPROP),)
+         LOCAL_CFLAGS += -DTW_INCLUDE_LIBRESETPROP
+     endif
  endif
 +ifeq ($(TW_EXCLUDE_TWRPAPP), true)
-+	LOCAL_CFLAGS += -DTW_EXCLUDE_TWRPAPP
++    LOCAL_CFLAGS += -DTW_EXCLUDE_TWRPAPP
 +endif
+ 
  TWRP_REQUIRED_MODULES += \
      dump_image \
-     erase_image \
 diff --git a/data.cpp b/data.cpp
-index 088dbda..ee40f21 100755
+index bf6e33b..a605f98 100755
 --- a/data.cpp
 +++ b/data.cpp
-@@ -912,10 +912,14 @@ void DataManager::SetDefaultValues()
+@@ -951,10 +951,14 @@ void DataManager::SetDefaultValues()
  	mConst.SetValue("tw_app_installed_in_system", "0");
  #else
  	mConst.SetValue("tw_oem_build", "0");
@@ -53,10 +53,10 @@ index 088dbda..ee40f21 100755
  
  	mData.SetValue("tw_enable_adb_backup", "0");
 diff --git a/gui/theme/common/landscape.xml b/gui/theme/common/landscape.xml
-index 8244c46..b3fa66c 100755
+index 3d8646c..6149546 100755
 --- a/gui/theme/common/landscape.xml
 +++ b/gui/theme/common/landscape.xml
-@@ -2924,6 +2924,7 @@
+@@ -2946,6 +2946,7 @@
  					<data variable="tw_military_time"/>
  				</listitem>
  				<listitem name="{@reboot_install_app_prompt_install=Prompt to install TWRP app on every reboot}">
@@ -65,10 +65,10 @@ index 8244c46..b3fa66c 100755
  				</listitem>
  				<listitem name="{@simact_chk=Simulate actions for theme testing}">
 diff --git a/gui/theme/common/portrait.xml b/gui/theme/common/portrait.xml
-index e014cc5..69d6de7 100755
+index 4b8cd4a..7478a92 100755
 --- a/gui/theme/common/portrait.xml
 +++ b/gui/theme/common/portrait.xml
-@@ -3137,6 +3137,7 @@
+@@ -3158,6 +3158,7 @@
  					<data variable="tw_samsung_navbar"/>
  				</listitem>
  				<listitem name="{@reboot_install_app_prompt_install=Prompt to install TWRP app on every reboot}">
@@ -77,10 +77,10 @@ index e014cc5..69d6de7 100755
  				</listitem>
  				<listitem name="{@simact_chk=Simulate actions for theme testing}">
 diff --git a/gui/theme/common/watch.xml b/gui/theme/common/watch.xml
-index f5d3222..0401472 100755
+index 7b474dd..534360c 100755
 --- a/gui/theme/common/watch.xml
 +++ b/gui/theme/common/watch.xml
-@@ -3627,6 +3627,7 @@
+@@ -3648,6 +3648,7 @@
  					<data variable="tw_military_time"/>
  				</listitem>
  				<listitem name="{@reboot_install_app_prompt_install=Prompt to install TWRP app on every reboot}">
@@ -89,10 +89,10 @@ index f5d3222..0401472 100755
  				</listitem>
  				<listitem name="{@simact_chk=Simulate actions for theme testing}">
 diff --git a/prebuilt/Android.mk b/prebuilt/Android.mk
-index 5c0b441..d480b1c 100644
+index a4f6f2e..a129554 100644
 --- a/prebuilt/Android.mk
 +++ b/prebuilt/Android.mk
-@@ -549,6 +549,7 @@ ifeq ($(TW_USE_TOOLBOX), true)
+@@ -562,6 +562,7 @@ ifeq ($(TW_USE_TOOLBOX), true)
      include $(BUILD_PREBUILT)
  endif
  
@@ -100,7 +100,7 @@ index 5c0b441..d480b1c 100644
  #TWRP App "placeholder"
  include $(CLEAR_VARS)
  LOCAL_MODULE := me.twrp.twrpapp.apk
-@@ -557,6 +558,7 @@ LOCAL_MODULE_CLASS := RECOVERY_EXECUTABLES
+@@ -579,6 +580,7 @@ LOCAL_MODULE_CLASS := RECOVERY_EXECUTABLES
  LOCAL_MODULE_PATH := $(TARGET_RECOVERY_ROOT_OUT)/sbin
  LOCAL_SRC_FILES := $(LOCAL_MODULE)
  include $(BUILD_PREBUILT)
@@ -109,5 +109,5 @@ index 5c0b441..d480b1c 100644
  ifeq ($(TW_INCLUDE_CRYPTO), true)
      ifneq ($(TW_CRYPTO_USE_SYSTEM_VOLD),)
 -- 
-2.21.0
+2.27.0
 
